@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { store } from "./store.svelte"
 
+	const MAX_DURATION_MINS = Math.floor(Number.MAX_SAFE_INTEGER / 60000)
+
 	let label = $state("")
 	let durationMins = $state(60)
 	let hasReadingTime = $state(false)
@@ -12,7 +14,8 @@
 			trimmed === "" ||
 			!Number.isFinite(durationMins) ||
 			!Number.isInteger(durationMins) ||
-			durationMins <= 0
+			durationMins <= 0 ||
+			durationMins > MAX_DURATION_MINS
 		)
 			return
 		store.add(trimmed, durationMins * 60, hasReadingTime)
@@ -33,6 +36,7 @@
 				<input
 					type="number"
 					min="1"
+					max={MAX_DURATION_MINS}
 					step="1"
 					bind:value={durationMins}
 				/>

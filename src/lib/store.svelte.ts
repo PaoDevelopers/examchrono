@@ -1,4 +1,5 @@
 const READING_SECS = 5 * 60
+const MAX_DURATION_SECS = Math.floor(Number.MAX_SAFE_INTEGER / 1000)
 
 type TimerState =
 	| { kind: "idle" }
@@ -152,6 +153,13 @@ class TimerStore {
 		durationSecs: number,
 		hasReadingTime: boolean,
 	): void {
+		if (
+			!Number.isFinite(durationSecs) ||
+			!Number.isInteger(durationSecs) ||
+			durationSecs <= 0 ||
+			durationSecs > MAX_DURATION_SECS
+		)
+			return
 		const order =
 			this.timers.length === 0
 				? 0

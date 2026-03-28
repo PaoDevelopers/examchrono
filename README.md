@@ -33,6 +33,9 @@ significantly, the program shows a timing anomaly warning above the timers. The
 warning only reports what was observed; it does not try to guess the exact
 cause, or attempt to adjust for it, as it is impossible to do so reliably.
 
+Due to JavaScript's use of IEEE 754 doubles, exam lengths above
+150,119,987,579 minutes (about 285 centuries) are rejected.
+
 ## License
 
 2-clause BSD. See the `LICENSE` file.
