@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eux
+
+cd "${BASH_SOURCE[0]%/*}"
+
+npm install
+npm run check
+npm run build
+
+exec rsync --delete-after -rP dist/ me@runxiyu.org:/var/www/examchrono/
