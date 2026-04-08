@@ -96,7 +96,7 @@
 	.top {
 		display: flex;
 		justify-content: space-between;
-		align-items: baseline;
+		align-items: start;
 		gap: 1rem;
 
 		h2 {
@@ -121,7 +121,7 @@
 	.bottom {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: end;
 
 		.actions {
 			display: flex;

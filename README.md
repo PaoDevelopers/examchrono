@@ -3,16 +3,16 @@
 ## Development
 
 ```
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 ## Build and deploy
 
 ```
-npm install
-npm run check
-npm run build
+bun install
+bun run check
+bun run build
 ```
 
 A production build will then be in `build/`.
