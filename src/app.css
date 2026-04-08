@@ -10,7 +10,9 @@
 	color: var(--fg);
 	background-color: var(--bg);
 	font-family: Inter, sans-serif;
-	font-feature-settings: "liga" 1, "calt" 1;
+	font-feature-settings:
+		"liga" 1,
+		"calt" 1;
 }
 
 @supports (font-variation-settings: normal) {
@@ -19,7 +21,9 @@
 	}
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: inherit;
 }
 
@@ -35,14 +39,31 @@
 
 body {
 	margin: 0;
-	padding: 1rem;
 }
 
-h1, h2, h3 {
+#app {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 1rem;
+
+	> *:has(+ footer) {
+		flex: 1;
+	}
+
+	> footer {
+		margin-top: 1rem;
+	}
+}
+
+h1,
+h2,
+h3 {
 	margin: 0;
 }
 
-input, button {
+input,
+button {
 	border: 1px solid var(--border);
 	border-radius: 0.25rem;
 	padding: 0.2rem 0.4rem;

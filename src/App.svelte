@@ -22,9 +22,6 @@
 
 <main>
 	<TimerForm />
-	<p class="current-time">
-		Local time {currentTimeFormatter.format(now)}
-	</p>
 	{#if store.warning !== null}
 		<p><span class="warning">Warning!</span> {store.warning}</p>
 	{/if}
@@ -39,6 +36,10 @@
 	</div>
 </main>
 
+<footer class="current-time">
+	Local time {currentTimeFormatter.format(now)}
+</footer>
+
 <style>
 	.grid {
 		display: grid;
@@ -52,7 +53,6 @@
 	}
 
 	.current-time {
-		margin: 0.75rem 0 0;
 		font-variant-numeric: tabular-nums;
 		color: var(--fg-muted);
 	}
