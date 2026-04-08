@@ -18,12 +18,14 @@ export function formatSecs(secs: number): string {
 	return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`
 }
 
-export function formatSummary(timer: Timer): string {
-	const examMins = timer.durationSecs / 60
-	if (timer.hasReadingTime) {
-		return `Reading → ${examMins} min exam`
-	}
-	return `${examMins} min exam`
+const hhmmFormatter = new Intl.DateTimeFormat(undefined, {
+	hour: "2-digit",
+	minute: "2-digit",
+	hour12: false,
+})
+
+export function formatEndTimeFromNow(remainingSecs: number): string {
+	return hhmmFormatter.format(Date.now() + remainingSecs * 1000)
 }
 
 export function phaseLabel(timer: Timer): PhaseLabel {

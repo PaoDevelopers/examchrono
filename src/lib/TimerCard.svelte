@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { store, type Timer } from "./store.svelte"
 	import {
+		formatEndTimeFromNow,
 		formatSecs,
-		formatSummary,
-		phaseLabel,
 		startButtonLabel,
 	} from "./format"
 
@@ -26,18 +25,46 @@
 		if (!window.confirm(`Remove “${timer.label}”?`)) return
 		store.remove(timer.id)
 	}
+
+	function endTimeLabel(): string | null {
+		if (timer.state.kind !== "running") return null
+		return formatEndTimeFromNow(store.displaySecs(timer))
+	}
 </script>
 
 <article>
 	<div class="top">
 		<h2>{timer.label}</h2>
-		<span class="summary">{formatSummary(timer)}</span>
+		<span class="summary">
+			{#if timer.hasReadingTime}
+				{#if timer.state.kind === "running" && timer.state.readingPhase}
+					<strong>Reading</strong> → {timer.durationSecs /
+						60} min exam
+				{:else if timer.state.kind === "running" && !timer.state.readingPhase}
+					Reading → <strong
+						>{timer.durationSecs / 60} min exam</strong
+					>
+				{:else}
+					Reading → {timer.durationSecs / 60} min exam
+				{/if}
+			{:else if timer.state.kind === "running"}
+				<strong
+					>{timer.durationSecs / 60} min exam</strong
+				>
+			{:else}
+				{timer.durationSecs / 60} min exam
+			{/if}
+		</span>
 	</div>
 
 	<p class="time">{formatSecs(store.displaySecs(timer))}</p>
 
 	<div class="bottom">
-		<span class="phase">{phaseLabel(timer)}</span>
+		<span class="end-time">
+			{#if endTimeLabel() !== null}
+				Ends {endTimeLabel()}
+			{/if}
+		</span>
 		<div class="actions">
 			{#if timer.state.kind === "running"}
 				<button
@@ -105,6 +132,7 @@
 
 		.summary {
 			white-space: nowrap;
+			text-align: right;
 		}
 	}
 
@@ -121,11 +149,22 @@
 	.bottom {
 		display: flex;
 		justify-content: space-between;
-		align-items: end;
+		align-items: flex-end;
+		gap: 1rem;
+
+		.end-time {
+			display: flex;
+			align-items: flex-end;
+			color: var(--fg-muted);
+			font-variant-numeric: tabular-nums;
+			line-height: 1;
+		}
 
 		.actions {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 0.5rem;
+			justify-content: end;
 		}
 	}
 </style>

@@ -38,6 +38,16 @@ class TimerStore {
 	public sortedTimers: Timer[] = $derived.by(() =>
 		[...this.timers].sort(compareTimers),
 	)
+	public canStartAll: boolean = $derived(
+		this.timers.some(
+			(timer) =>
+				timer.state.kind === "idle" ||
+				timer.state.kind === "paused",
+		),
+	)
+	public canPauseAll: boolean = $derived(
+		this.timers.some((timer) => timer.state.kind === "running"),
+	)
 
 	private intervalId: number | null = null
 	private previousTickMonoTime: number | null = null
@@ -287,6 +297,32 @@ class TimerStore {
 					readingRemainingSecs: 0,
 				}
 		if (!this.anyRunning()) this.stopInterval()
+	}
+
+	public pauseAll(): void {
+		this.captureNow()
+		let pausedAny = false
+		for (const timer of this.timers) {
+			if (timer.state.kind !== "running") continue
+			const secsLeft = Math.max(
+				0,
+				Math.ceil(this.remainingMs(timer) / 1000),
+			)
+			timer.state = timer.state.readingPhase
+				? {
+						kind: "paused",
+						remainingSecs:
+							timer.durationSecs,
+						readingRemainingSecs: secsLeft,
+					}
+				: {
+						kind: "paused",
+						remainingSecs: secsLeft,
+						readingRemainingSecs: 0,
+					}
+			pausedAny = true
+		}
+		if (pausedAny && !this.anyRunning()) this.stopInterval()
 	}
 
 	public reset(id: string): void {

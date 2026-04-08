@@ -51,9 +51,22 @@
 			<button type="submit">Add</button>
 		</form>
 	</details>
-	<button type="button" onclick={() => store.startAll()}>
-		Start all
-	</button>
+	<div class="bulk-actions">
+		<button
+			type="button"
+			onclick={() => store.startAll()}
+			disabled={!store.canStartAll}
+		>
+			Start all
+		</button>
+		<button
+			type="button"
+			onclick={() => store.pauseAll()}
+			disabled={!store.canPauseAll}
+		>
+			Pause all
+		</button>
+	</div>
 </section>
 
 <style>
@@ -70,6 +83,11 @@
 		gap: 1rem;
 		flex-wrap: wrap;
 		padding: 0.75rem;
+	}
+
+	.bulk-actions {
+		display: flex;
+		gap: 0.75rem;
 	}
 
 	label {
